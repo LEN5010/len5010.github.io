@@ -1,26 +1,26 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>学习通电脑端参加&quot;仅手机端&quot;考试教程 | LEN's Web</title><meta name="author" content="LEN"><meta name="copyright" content="LEN"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#F8F4FC"><meta name="description" content="前言学习通部分考试被设置为”仅限手机端”，但手机屏幕小、打字慢，体验较差。本文介绍如何通过UA伪装与参数构造在电脑浏览器上参加这类考试。  免责声明：本文仅供技术学习交流，请遵守学校相关规定，不要作弊❕不要作弊❕不要作弊❕  原理简析 UA伪装 → 欺骗服务器设备类型判断 URL构造 → 绕过前端路由限制 设备模拟 → 绕过JS层面的设备检测  核心：服务端未做严格设备验证，仅依赖前端限制 测试环">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>如何使用JSBridge Hook与UA伪装实现学习通Web端参加手机考试 | LEN's Web</title><meta name="author" content="LEN"><meta name="copyright" content="LEN"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#F8F4FC"><meta name="description" content="什么叫只有Web端没有被邀请参加派对?  这不公平!学习通有许多考试只允许手机参加，而本文通过 UA 伪装、参数构造与 JSBridge Hook 实现了在电脑浏览器上参加这类考试。  免责声明：本文仅供技术学习交流，请遵守学校相关规定，不要做违规的事情!       (那就是要做啊我看)   实验原理简析学习通的仅手机端限制主要依赖以下机制：    层级 检测方式 绕过方法    HTTP层 U">
 <meta property="og:type" content="article">
-<meta property="og:title" content="学习通电脑端参加&quot;仅手机端&quot;考试教程">
+<meta property="og:title" content="如何使用JSBridge Hook与UA伪装实现学习通Web端参加手机考试">
 <meta property="og:url" content="https://len5010.github.io/2025/12/14/chaoxing_pc_ua/">
 <meta property="og:site_name" content="LEN&#39;s Web">
-<meta property="og:description" content="前言学习通部分考试被设置为”仅限手机端”，但手机屏幕小、打字慢，体验较差。本文介绍如何通过UA伪装与参数构造在电脑浏览器上参加这类考试。  免责声明：本文仅供技术学习交流，请遵守学校相关规定，不要作弊❕不要作弊❕不要作弊❕  原理简析 UA伪装 → 欺骗服务器设备类型判断 URL构造 → 绕过前端路由限制 设备模拟 → 绕过JS层面的设备检测  核心：服务端未做严格设备验证，仅依赖前端限制 测试环">
+<meta property="og:description" content="什么叫只有Web端没有被邀请参加派对?  这不公平!学习通有许多考试只允许手机参加，而本文通过 UA 伪装、参数构造与 JSBridge Hook 实现了在电脑浏览器上参加这类考试。  免责声明：本文仅供技术学习交流，请遵守学校相关规定，不要做违规的事情!       (那就是要做啊我看)   实验原理简析学习通的仅手机端限制主要依赖以下机制：    层级 检测方式 绕过方法    HTTP层 U">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://len5010.github.io/img/ava.png">
 <meta property="article:published_time" content="2025-12-14T11:30:00.000Z">
-<meta property="article:modified_time" content="2025-12-14T11:35:04.731Z">
+<meta property="article:modified_time" content="2025-12-14T13:18:28.199Z">
 <meta property="article:author" content="LEN">
-<meta property="article:tag" content="学习通">
 <meta property="article:tag" content="UA伪装">
-<meta property="article:tag" content="浏览器">
+<meta property="article:tag" content="JSBridge">
+<meta property="article:tag" content="逆向">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://len5010.github.io/img/ava.png"><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "学习通电脑端参加\"仅手机端\"考试教程",
+  "headline": "如何使用JSBridge Hook与UA伪装实现学习通Web端参加手机考试",
   "url": "https://len5010.github.io/2025/12/14/chaoxing_pc_ua/",
   "image": "https://len5010.github.io/img/ava.png",
   "datePublished": "2025-12-14T11:30:00.000Z",
-  "dateModified": "2025-12-14T11:35:04.731Z",
+  "dateModified": "2025-12-14T13:18:28.199Z",
   "author": [
     {
       "@type": "Person",
@@ -160,7 +160,7 @@
   },
   autoDarkmode: false
 }</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '学习通电脑端参加"仅手机端"考试教程',
+  title: '如何使用JSBridge Hook与UA伪装实现学习通Web端参加手机考试',
   isHighlightShrink: false,
   isToc: true,
   pageType: 'post'
@@ -185,69 +185,137 @@
     btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
   }
-})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/ava.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/cover.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">LEN's Web</span></a><a class="nav-page-title" href="/"><span class="site-name">学习通电脑端参加&quot;仅手机端&quot;考试教程</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">学习通电脑端参加&quot;仅手机端&quot;考试教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-12-14T11:30:00.000Z" title="发表于 2025-12-14 19:30:00">2025-12-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-14T11:35:04.731Z" title="更新于 2025-12-14 19:35:04">2025-12-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;距离这篇文章发布已经过去&quot;,&quot;messageNext&quot;:&quot;天了,其中的信息或许已经失去参考机制&quot;,&quot;postUpdate&quot;:&quot;2025-12-14 19:35:04&quot;}" hidden></div><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a><strong>前言</strong></h4><p>学习通部分考试被设置为”仅限手机端”，但手机屏幕小、打字慢，体验较差。<br>本文介绍如何通过UA伪装与参数构造在电脑浏览器上参加这类考试。</p>
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/ava.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/cover.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">LEN's Web</span></a><a class="nav-page-title" href="/"><span class="site-name">如何使用JSBridge Hook与UA伪装实现学习通Web端参加手机考试</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">如何使用JSBridge Hook与UA伪装实现学习通Web端参加手机考试</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-12-14T11:30:00.000Z" title="发表于 2025-12-14 19:30:00">2025-12-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-14T13:18:28.199Z" title="更新于 2025-12-14 21:18:28">2025-12-14</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;距离这篇文章发布已经过去&quot;,&quot;messageNext&quot;:&quot;天了,其中的信息或许已经失去参考机制&quot;,&quot;postUpdate&quot;:&quot;2025-12-14 21:18:28&quot;}" hidden></div><h1 id="什么叫只有Web端没有被邀请参加派对-这不公平"><a href="#什么叫只有Web端没有被邀请参加派对-这不公平" class="headerlink" title="什么叫只有Web端没有被邀请参加派对?  这不公平!"></a><strong>什么叫只有Web端没有被邀请参加派对?</strong>  <strong>这不公平!</strong></h1><p>学习通有许多考试只允许手机参加，而本文通过 UA 伪装、参数构造与 JSBridge Hook 实现了在电脑浏览器上参加这类考试。</p>
 <blockquote>
-<p><strong>免责声明</strong>：本文仅供技术学习交流，请遵守学校相关规定，不要作弊❕不要作弊❕不要作弊❕</p>
+<p><strong>免责声明</strong>：本文仅供技术学习交流，请遵守学校相关规定，不要做违规的事情!       <del>(那就是要做啊我看)</del></p>
 </blockquote>
-<h4 id="原理简析"><a href="#原理简析" class="headerlink" title="原理简析"></a><strong>原理简析</strong></h4><ol>
-<li>UA伪装 → 欺骗服务器设备类型判断</li>
-<li>URL构造 → 绕过前端路由限制</li>
-<li>设备模拟 → 绕过JS层面的设备检测</li>
-</ol>
-<p>核心：<strong>服务端未做严格设备验证，仅依赖前端限制</strong></p>
-<h4 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a><strong>测试环境</strong></h4><ul>
+<hr>
+<h2 id="实验原理简析"><a href="#实验原理简析" class="headerlink" title="实验原理简析"></a>实验原理简析</h2><p>学习通的仅手机端限制主要依赖以下机制：</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>检测方式</th>
+<th>绕过方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HTTP层</td>
+<td>User-Agent 判断</td>
+<td>UA伪装插件</td>
+</tr>
+<tr>
+<td>前端路由</td>
+<td>URL参数校验</td>
+<td>手动构造URL</td>
+</tr>
+<tr>
+<td>JS层</td>
+<td>设备特征检测</td>
+<td>Chrome设备模拟</td>
+</tr>
+<tr>
+<td>Native层</td>
+<td>JSBridge通信</td>
+<td>Hook模拟APP响应</td>
+</tr>
+<tr>
+<td>安全层</td>
+<td>签名验证</td>
+<td>构造签名响应</td>
+</tr>
+</tbody></table>
+<p>我们发现:<strong>服务端未严格验证签名来源，仅依赖前端+JSBridge限制</strong></p>
+<hr>
+<h2 id="技术细节（逆向分析）"><a href="#技术细节（逆向分析）" class="headerlink" title="技术细节（逆向分析）"></a>技术细节（逆向分析）</h2><h3 id="JSBridge-通信机制"><a href="#JSBridge-通信机制" class="headerlink" title="JSBridge 通信机制"></a>JSBridge 通信机制</h3><p>学习通 APP 使用 JSBridge 实现网页与原生 APP 的通信：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">网页 → jsBridge.postNotification(&#x27;CLIENT_FORM_SIGN&#x27;, data)</span><br><span class="line">    → iframe.src = &#x27;jsbridge://PostNotificationWithId-1&#x27;</span><br><span class="line">    → APP拦截并处理</span><br><span class="line">    → APP 调用 jsBridge.trigger(&#x27;CLIENT_FORM_SIGN&#x27;, response)</span><br><span class="line">    → 网页收到回调，继续执行</span><br></pre></td></tr></table></figure>
+
+<p>在电脑浏览器中，如果我们只通过修改UA与构造URL来访问考试<br><code>jsbridge://</code> 将协议无人处理，导致流程中断。</p>
+<h3 id="关键-JSBridge-事件"><a href="#关键-JSBridge-事件" class="headerlink" title="关键 JSBridge 事件"></a>关键 JSBridge 事件</h3><table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CLIENT_DEVICE_ID</code></td>
+<td>获取设备唯一标识</td>
+</tr>
+<tr>
+<td><code>CLIENT_FORM_SIGN</code></td>
+<td>表单签名验证</td>
+</tr>
+<tr>
+<td><code>CLIENT_CHECK_URL_TYPE</code></td>
+<td>URL类型检查</td>
+</tr>
+<tr>
+<td><code>CLIENT_EVERISK_INFO_CHECK</code></td>
+<td>风险检查</td>
+</tr>
+</tbody></table>
+<h3 id="签名回调格式"><a href="#签名回调格式" class="headerlink" title="签名回调格式"></a>签名回调格式</h3><p><code>CLIENT_FORM_SIGN</code> 回调期望的响应格式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">success</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">result</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">typeFlag</span>: <span class="string">&#x27;&#123;&quot;type&quot;:&quot;startExam&quot;,&quot;funckey&quot;:&quot;startExam_xxx&quot;&#125;&#x27;</span>,</span><br><span class="line">    <span class="attr">cxcid</span>: <span class="string">&#x27;设备ID&#x27;</span>,</span><br><span class="line">    <span class="attr">cxtime</span>: <span class="string">&#x27;时间戳&#x27;</span>,</span><br><span class="line">    <span class="attr">paramToken</span>: <span class="string">&#x27;参数签名&#x27;</span>,</span><br><span class="line">    <span class="attr">signToken</span>: <span class="string">&#x27;签名Token&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h2><ul>
 <li>时间：2025年12月</li>
-<li>浏览器：Edge</li>
+<li>浏览器：Edge &#x2F; Chrome</li>
 <li>学习通版本：6.7.1</li>
 </ul>
 <hr>
-<h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a><strong>准备工作</strong></h4><p><strong>1. 安装浏览器插件</strong></p>
-<p>安装 <strong>User-Agent Switcher and Manager</strong>（Chrome&#x2F;Edge&#x2F;Firefox 均可）</p>
-<p><strong>2. 获取学习通手机端 UA</strong></p>
-<p>在手机学习通内置浏览器中访问：</p>
-<p><a target="_blank" rel="noopener" href="https://www.whatismybrowser.com/detect/what-is-my-user-agent">https://www.whatismybrowser.com/detect/what-is-my-user-agent</a></p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="安装浏览器插件"><a href="#安装浏览器插件" class="headerlink" title="安装浏览器插件"></a>安装浏览器插件</h3><p>安装 <strong>User-Agent Switcher and Manager</strong>（Chrome&#x2F;Edge&#x2F;Firefox 均可）</p>
+<h3 id="获取学习通手机端-UA"><a href="#获取学习通手机端-UA" class="headerlink" title="获取学习通手机端 UA"></a>获取学习通手机端 UA</h3><p>在手机学习通内置浏览器中访问：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.whatismybrowser.com/detect/what-is-my-user-agent</span><br></pre></td></tr></table></figure>
+
 <p>复制显示的 User-Agent 字符串，格式类似：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Mozilla/5.0 (iPhone; CPU iPhone OS 26_1like Mac OS X) AppleWebKit/605.1.15 </span><br><span class="line">(KHTML, like Gecko) Mobile/15E148 ... com.ssreader.ChaoXingStudy/ChaoXingStudy_3_6.7.1_ios_phone_...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Mozilla/5.0 (iPhone; CPU iPhone OS 26_1like Mac OS X) AppleWebKit/605.1.15</span><br><span class="line">(KHTML, like Gecko) Mobile/15E148 ... com.ssreader.ChaoXingStudy/ChaoXingStudy_3_6.7.1_ios_phone_...</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>提示：UA 必须包含 <code>ChaoXingStudy</code> 关键字，普通手机浏览器 UA 无效<br>学习通访问外部链接的小技巧:<br>在笔记里直接写一个链接，点开访问<br><img src="查看ua方法.png" alt="查看ua方法.png" style="zoom:25%;"/></p>
-</blockquote>
-<h4 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a><strong>操作步骤</strong></h4><p><strong>第一步：提取课程参数</strong></p>
-<ol>
+<p><strong>提示</strong>：UA 必须包含 <code>ChaoXingStudy</code> 关键字，普通手机浏览器 UA 无效</p>
+<p>学习通访问外部链接的小技巧：在笔记里直接写一个链接，点开访问</p>
+<img src="查看ua方法.png" alt="查看ua方法.png" style="zoom:20%;"/></blockquote>
+<hr>
+<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><h3 id="第一步：提取课程参数"><a href="#第一步：提取课程参数" class="headerlink" title="第一步：提取课程参数"></a>第一步：提取课程参数</h3><ol>
 <li>电脑登录学习通，进入目标课程页面</li>
 <li>F12 打开开发者工具 → Elements 面板</li>
-<li>Ctrl+F 搜索如图示的courseId、classId等</li>
+<li>Ctrl+F 搜索 <code>courseId</code>、<code>classId</code> 等参数</li>
 </ol>
-<img src="第一次1.png" alt="第一次1.png" style="zoom:33%;"/>
-也可以在url中找到:
-<img src="第一次2.png" alt="第一次2.png" style="zoom:66%;"/>
+<img src="第一次1.png" alt="第一次1.png" style="zoom:46%;"/>
 
-<p><strong>第二步：获取考试ID</strong></p>
-<ol>
+<p>也可以在 URL 中找到：</p>
+<img src="第一次2.png" alt="第一次2.png" style="zoom:46%;"/>
+
+<hr>
+<h3 id="第二步：获取考试ID"><a href="#第二步：获取考试ID" class="headerlink" title="第二步：获取考试ID"></a>第二步：获取考试ID</h3><ol>
 <li><p><strong>启用 UA 伪装</strong>（设置为手机端 UA）</p>
 </li>
-<li><p>构造并访问以下链接(记得填写自己的参数)：</p>
+<li><p>构造并访问以下链接（填写自己的参数）：</p>
 </li>
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://mooc1.xuexi365.com/exam-ans/exam/test?courseId=【courseId】&amp;classId=【classId】&amp;ut=s&amp;cpi=【cpi】&amp;enc=【enc】&amp;openc=【openc】</span><br></pre></td></tr></table></figure>
-<img src="第一次构造效果.png" alt="第一次构造效果.png" style="zoom:33%;"/>
-3. F12 → Ctrl+F 搜索 TestRelationInfo
 
-<ol start="4">
-<li>找到类似内容：</li>
+<img src="第一次构造效果.png" alt="第一次构造效果.png" style="zoom:46%;"/>
+
+<ol start="3">
+<li><p>F12 → Ctrl+F 搜索 <code>TestRelationInfo</code></p>
+</li>
+<li><p>找到类似内容：</p>
+</li>
 </ol>
-<img src="查看Info.png" alt="查看Info.png" style="zoom:33%;"/>
+<img src="查看Info.png" alt="查看Info.png" style="zoom:46%;"/>
+
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">TestRelationInfo</span> = &#123;<span class="string">&quot;7707727&quot;</span>:&#123;<span class="string">&quot;limitTime&quot;</span>:<span class="string">&quot;60&quot;</span>,<span class="string">&quot;expiredAutoSubmit&quot;</span>:<span class="string">&quot;1&quot;</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
 
 <ol start="5">
 <li>记录其中的数字 ID（如 <code>7707727</code>），这就是 <strong>taskrefId</strong></li>
 </ol>
 <blockquote>
-<p>提示：enc 参数有时效性，过期需重新获取</p>
+<p><strong>提示</strong>：enc 参数有时效性，过期需重新获取</p>
 </blockquote>
 <hr>
-<p><strong>第三步：进入考试</strong></p>
-<ol>
+<h3 id="第三步：进入考试页面"><a href="#第三步：进入考试页面" class="headerlink" title="第三步：进入考试页面"></a>第三步：进入考试页面</h3><ol>
 <li>构造最终链接：</li>
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://mooc1-api.chaoxing.com/exam-ans/exam/phone/task-exam?taskrefId=【taskrefId】&amp;courseId=【courseId】&amp;classId=【classId】&amp;ut=s&amp;cpi=【cpi】</span><br></pre></td></tr></table></figure>
@@ -258,20 +326,26 @@
 <li><p>访问链接</p>
 </li>
 </ol>
-<img src="效果.png" alt="效果.png" style="zoom:33%;"/>
+<img src="效果.png" alt="效果.png" style="zoom:46%;"/>
 
 <ol start="4">
-<li>如果按钮无法点击：<ul>
-<li>F12 打开开发者工具</li>
-<li>点击左上角 <strong>设备模拟图标</strong></li>
-<li>关闭开发者工具</li>
-<li>刷新页面</li>
-</ul>
-</li>
+<li>F12 打开开发者工具 → 点击左上角 <strong>设备模拟图标</strong>（或 <code>Ctrl+Shift+M</code>）</li>
 </ol>
-<p>5.成功进入考试</p>
 <hr>
-<h4 id="参数表"><a href="#参数表" class="headerlink" title="参数表"></a><strong>参数表</strong></h4><table>
+<h3 id="第四步：注入-Hook-代码"><a href="#第四步：注入-Hook-代码" class="headerlink" title="第四步：注入 Hook 代码"></a>第四步：注入 Hook 代码</h3><p>在 Console 中执行以下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ========== 1. 禁用反调试 ==========</span></span><br><span class="line">(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> _Function = <span class="title class_">Function</span>;</span><br><span class="line">    <span class="title class_">Function</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> args = <span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="variable language_">arguments</span>);</span><br><span class="line">        <span class="keyword">var</span> body = args[args.<span class="property">length</span> - <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> body === <span class="string">&#x27;string&#x27;</span> &amp;&amp; body.<span class="title function_">includes</span>(<span class="string">&#x27;debugger&#x27;</span>)) &#123;</span><br><span class="line">            args[args.<span class="property">length</span> - <span class="number">1</span>] = body.<span class="title function_">replace</span>(<span class="regexp">/debugger/g</span>, <span class="string">&#x27;&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> _Function.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span> = _Function.<span class="property"><span class="keyword">prototype</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> _setInterval = <span class="built_in">setInterval</span>;</span><br><span class="line">    <span class="built_in">setInterval</span> = <span class="keyword">function</span>(<span class="params">fn, time</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> fn === <span class="string">&#x27;function&#x27;</span> &amp;&amp; fn.<span class="title function_">toString</span>().<span class="title function_">includes</span>(<span class="string">&#x27;debugger&#x27;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> _setInterval.<span class="title function_">apply</span>(<span class="variable language_">this</span>, <span class="variable language_">arguments</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="comment">// ========== 2. 验证码回调 ==========</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="property">cx_captcha_function</span> = <span class="keyword">function</span>(<span class="params">data</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[验证码回调]&#x27;</span>, data);</span><br><span class="line">    <span class="keyword">if</span> (data.<span class="property">result</span> === <span class="literal">true</span> &amp;&amp; data.<span class="property">extraData</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> extra = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(data.<span class="property">extraData</span>);</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;验证码通过，validate:&#x27;</span>, extra.<span class="property">validate</span>);</span><br><span class="line">        <span class="variable language_">window</span>.<span class="property">_captchaValidate</span> = extra.<span class="property">validate</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ========== 3. JSBridge Hook ==========</span></span><br><span class="line">(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> fakeDeviceId = <span class="string">&#x27;IMEI_&#x27;</span> + <span class="title class_">Math</span>.<span class="title function_">random</span>().<span class="title function_">toString</span>(<span class="number">36</span>).<span class="title function_">substr</span>(<span class="number">2</span>, <span class="number">16</span>).<span class="title function_">toUpperCase</span>();</span><br><span class="line">    <span class="keyword">var</span> originalPost = jsBridge.<span class="property">postNotification</span>.<span class="title function_">bind</span>(jsBridge);</span><br><span class="line"></span><br><span class="line">    jsBridge.<span class="property">postNotification</span> = <span class="keyword">function</span>(<span class="params">name, userInfo</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[发送]&#x27;</span>, name, userInfo);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">var</span> response = &#123;<span class="attr">success</span>: <span class="literal">true</span>, <span class="attr">result</span>: <span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (name === <span class="string">&#x27;CLIENT_FORM_SIGN&#x27;</span>) &#123;</span><br><span class="line">                <span class="keyword">var</span> typeFlag = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    typeFlag = userInfo.<span class="property">typeFlag</span>;</span><br><span class="line">                &#125; <span class="keyword">catch</span>(e) &#123;&#125;</span><br><span class="line"></span><br><span class="line">                response = &#123;</span><br><span class="line">                    <span class="attr">success</span>: <span class="literal">true</span>,</span><br><span class="line">                    <span class="attr">result</span>: <span class="number">0</span>,</span><br><span class="line">                    <span class="attr">typeFlag</span>: typeFlag,</span><br><span class="line">                    <span class="attr">cxcid</span>: fakeDeviceId,</span><br><span class="line">                    <span class="attr">cxtime</span>: <span class="title class_">String</span>(<span class="title class_">Date</span>.<span class="title function_">now</span>()),</span><br><span class="line">                    <span class="attr">paramToken</span>: <span class="string">&#x27;pt_&#x27;</span> + <span class="title class_">Date</span>.<span class="title function_">now</span>(),</span><br><span class="line">                    <span class="attr">signToken</span>: <span class="string">&#x27;st_&#x27;</span> + <span class="title class_">Date</span>.<span class="title function_">now</span>(),</span><br><span class="line">                    <span class="attr">checkCount</span>: <span class="string">&#x27;0&#x27;</span>,</span><br><span class="line">                    <span class="attr">extraInfo</span>: &#123;<span class="attr">code</span>: <span class="string">&#x27;&#x27;</span>&#125;</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (name === <span class="string">&#x27;CLIENT_DEVICE_ID&#x27;</span>) &#123;</span><br><span class="line">                response = &#123;<span class="attr">deviceId</span>: fakeDeviceId, <span class="attr">imei</span>: fakeDeviceId, <span class="attr">success</span>: <span class="literal">true</span>&#125;;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (name === <span class="string">&#x27;CLIENT_CHECK_URL_TYPE&#x27;</span>) &#123;</span><br><span class="line">                response = &#123;<span class="attr">success</span>: <span class="literal">true</span>, <span class="attr">result</span>: <span class="number">0</span>, <span class="attr">type</span>: <span class="number">0</span>&#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;[响应]&#x27;</span>, name, response);</span><br><span class="line">            jsBridge.<span class="title function_">trigger</span>(name, response);</span><br><span class="line">        &#125;, <span class="number">100</span>);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    jsBridge.<span class="title function_">setDevice</span>(<span class="string">&#x27;ios&#x27;</span>);</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;全部 Hook 已注入，可以点击开始考试了&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="第五步：开始考试"><a href="#第五步：开始考试" class="headerlink" title="第五步：开始考试"></a>第五步：开始考试</h3><ol>
+<li>按 <code>Ctrl+F8</code> 禁用所有断点（学习通网页检测到F12打开会强制debugger）</li>
+<li>点击”开始考试”按钮</li>
+<li>完成验证码验证</li>
+<li>成功进入考试！</li>
+</ol>
+<img src="最后成功.png" alt="最后成功.png" style="zoom:46%;"/>
+
+
+<h2 id="参数速查表"><a href="#参数速查表" class="headerlink" title="参数速查表"></a>参数速查表</h2><table>
 <thead>
 <tr>
 <th>步骤</th>
@@ -279,7 +353,7 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>获取examId</td>
+<td>获取 taskrefId</td>
 <td><code>https://mooc1.xuexi365.com/exam-ans/exam/test?courseId=&amp;classId=&amp;ut=s&amp;cpi=&amp;enc=&amp;openc=</code></td>
 </tr>
 <tr>
@@ -287,9 +361,16 @@
 <td><code>https://mooc1-api.chaoxing.com/exam-ans/exam/phone/task-exam?taskrefId=&amp;courseId=&amp;classId=&amp;ut=s&amp;cpi=</code></td>
 </tr>
 </tbody></table>
-<hr>
-<h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a><strong>注意事项</strong></h4><ol>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
 <li><strong>enc 参数有时效性</strong>，过期需重新获取</li>
-<li><strong>UA 必须是学习通APP的</strong>，普通手机浏览器 UA 可能无效</li>
+<li><strong>UA 必须是学习通 APP 的</strong>，普通手机浏览器 UA 无效</li>
+<li><strong>考试过程中不要关闭 UA 伪装和设备模拟</strong></li>
+<li>Hook 代码需要在<strong>每次刷新页面后重新执行</strong></li>
 </ol>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://len5010.github.io">LEN</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://len5010.github.io/2025/12/14/chaoxing_pc_ua/">https://len5010.github.io/2025/12/14/chaoxing_pc_ua/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://len5010.github.io" target="_blank">LEN's Web</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E9%80%9A/">学习通</a><a class="post-meta__tags" href="/tags/UA%E4%BC%AA%E8%A3%85/">UA伪装</a><a class="post-meta__tags" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/10/15/shamir_enc/" title="基于Shamir门限的彩色图片秘密共享方案"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">基于Shamir门限的彩色图片秘密共享方案</div></div><div class="info-2"><div class="info-item-1">Shamir门限秘密图片共享方案论文阅读笔记参考论文:Reversible Data Hiding in Encrypted Image viaSecret Sharing Based on $GF(p) $and $GF(2^8)$方法理论介绍Shamir’s Secret...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/ava.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LEN</div><div class="author-info-description">醉如飞鸟,逝如闪电</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/len5010"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">苦恼于期末考中...</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E7%AE%80%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">原理简析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83"><span class="toc-number">3.</span> <span class="toc-text">测试环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.</span> <span class="toc-text">操作步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%A1%A8"><span class="toc-number">6.</span> <span class="toc-text">参数表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">7.</span> <span class="toc-text">注意事项</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/14/chaoxing_pc_ua/" title="学习通电脑端参加&quot;仅手机端&quot;考试教程">学习通电脑端参加&quot;仅手机端&quot;考试教程</a><time datetime="2025-12-14T11:30:00.000Z" title="发表于 2025-12-14 19:30:00">2025-12-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/15/shamir_enc/" title="基于Shamir门限的彩色图片秘密共享方案">基于Shamir门限的彩色图片秘密共享方案</a><time datetime="2025-10-15T09:50:32.000Z" title="发表于 2025-10-15 17:50:32">2025-10-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/22/pe_hex_shellcode/" title="记录一次PE文件感染注入shellcode的实验过程和错误">记录一次PE文件感染注入shellcode的实验过程和错误</a><time datetime="2025-05-22T03:18:11.000Z" title="发表于 2025-05-22 11:18:11">2025-05-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/20/win7_write_file/" title="FAT32隐写在Window7及以后的系统中出现的问题">FAT32隐写在Window7及以后的系统中出现的问题</a><time datetime="2025-05-19T17:50:32.000Z" title="发表于 2025-05-20 01:50:32">2025-05-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/19/mac_sql_problem/" title="macOS Mysql的ERROR 2002 (HY000)的Socket连接问题及解决方案">macOS Mysql的ERROR 2002 (HY000)的Socket连接问题及解决方案</a><time datetime="2025-05-19T07:50:32.000Z" title="发表于 2025-05-19 15:50:32">2025-05-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 By LEN</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div><div class="footer_custom_text">Keine Ahnung</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903585268891662">JSBridge 原理分析</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/devtools/device-mode/">Chrome DevTools 设备模拟</a></li>
+<li><a target="_blank" rel="noopener" href="https://chromewebstore.google.com/detail/user-agent-switcher-and-m/bhchdcejhohfmigjafbampogmaanbfkg">User-Agent Switcher 插件</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://len5010.github.io">LEN</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://len5010.github.io/2025/12/14/chaoxing_pc_ua/">https://len5010.github.io/2025/12/14/chaoxing_pc_ua/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://len5010.github.io" target="_blank">LEN's Web</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/UA%E4%BC%AA%E8%A3%85/">UA伪装</a><a class="post-meta__tags" href="/tags/JSBridge/">JSBridge</a><a class="post-meta__tags" href="/tags/%E9%80%86%E5%90%91/">逆向</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/10/15/shamir_enc/" title="基于Shamir门限的彩色图片秘密共享方案"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">基于Shamir门限的彩色图片秘密共享方案</div></div><div class="info-2"><div class="info-item-1">Shamir门限秘密图片共享方案论文阅读笔记参考论文:Reversible Data Hiding in Encrypted Image viaSecret Sharing Based on $GF(p) $and $GF(2^8)$方法理论介绍Shamir’s Secret...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/ava.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LEN</div><div class="author-info-description">醉如飞鸟,逝如闪电</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/len5010"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">苦恼于期末考中...</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E5%8F%AB%E5%8F%AA%E6%9C%89Web%E7%AB%AF%E6%B2%A1%E6%9C%89%E8%A2%AB%E9%82%80%E8%AF%B7%E5%8F%82%E5%8A%A0%E6%B4%BE%E5%AF%B9-%E8%BF%99%E4%B8%8D%E5%85%AC%E5%B9%B3"><span class="toc-number">1.</span> <span class="toc-text">什么叫只有Web端没有被邀请参加派对?  这不公平!</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86%E7%AE%80%E6%9E%90"><span class="toc-number">1.1.</span> <span class="toc-text">实验原理简析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82%EF%BC%88%E9%80%86%E5%90%91%E5%88%86%E6%9E%90%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">技术细节（逆向分析）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JSBridge-%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">JSBridge 通信机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE-JSBridge-%E4%BA%8B%E4%BB%B6"><span class="toc-number">1.2.2.</span> <span class="toc-text">关键 JSBridge 事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%BE%E5%90%8D%E5%9B%9E%E8%B0%83%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.2.3.</span> <span class="toc-text">签名回调格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83"><span class="toc-number">1.3.</span> <span class="toc-text">测试环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.4.</span> <span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8F%92%E4%BB%B6"><span class="toc-number">1.4.1.</span> <span class="toc-text">安装浏览器插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%AD%A6%E4%B9%A0%E9%80%9A%E6%89%8B%E6%9C%BA%E7%AB%AF-UA"><span class="toc-number">1.4.2.</span> <span class="toc-text">获取学习通手机端 UA</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.5.</span> <span class="toc-text">操作步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E6%8F%90%E5%8F%96%E8%AF%BE%E7%A8%8B%E5%8F%82%E6%95%B0"><span class="toc-number">1.5.1.</span> <span class="toc-text">第一步：提取课程参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E8%8E%B7%E5%8F%96%E8%80%83%E8%AF%95ID"><span class="toc-number">1.5.2.</span> <span class="toc-text">第二步：获取考试ID</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E8%BF%9B%E5%85%A5%E8%80%83%E8%AF%95%E9%A1%B5%E9%9D%A2"><span class="toc-number">1.5.3.</span> <span class="toc-text">第三步：进入考试页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E6%B3%A8%E5%85%A5-Hook-%E4%BB%A3%E7%A0%81"><span class="toc-number">1.5.4.</span> <span class="toc-text">第四步：注入 Hook 代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5%EF%BC%9A%E5%BC%80%E5%A7%8B%E8%80%83%E8%AF%95"><span class="toc-number">1.5.5.</span> <span class="toc-text">第五步：开始考试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E9%80%9F%E6%9F%A5%E8%A1%A8"><span class="toc-number">1.6.</span> <span class="toc-text">参数速查表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.7.</span> <span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.8.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/14/chaoxing_pc_ua/" title="如何使用JSBridge Hook与UA伪装实现学习通Web端参加手机考试">如何使用JSBridge Hook与UA伪装实现学习通Web端参加手机考试</a><time datetime="2025-12-14T11:30:00.000Z" title="发表于 2025-12-14 19:30:00">2025-12-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/15/shamir_enc/" title="基于Shamir门限的彩色图片秘密共享方案">基于Shamir门限的彩色图片秘密共享方案</a><time datetime="2025-10-15T09:50:32.000Z" title="发表于 2025-10-15 17:50:32">2025-10-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/22/pe_hex_shellcode/" title="记录一次PE文件感染注入shellcode的实验过程和错误">记录一次PE文件感染注入shellcode的实验过程和错误</a><time datetime="2025-05-22T03:18:11.000Z" title="发表于 2025-05-22 11:18:11">2025-05-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/20/win7_write_file/" title="FAT32隐写在Window7及以后的系统中出现的问题">FAT32隐写在Window7及以后的系统中出现的问题</a><time datetime="2025-05-19T17:50:32.000Z" title="发表于 2025-05-20 01:50:32">2025-05-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/05/19/mac_sql_problem/" title="macOS Mysql的ERROR 2002 (HY000)的Socket连接问题及解决方案">macOS Mysql的ERROR 2002 (HY000)的Socket连接问题及解决方案</a><time datetime="2025-05-19T07:50:32.000Z" title="发表于 2025-05-19 15:50:32">2025-05-19</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2025 By LEN</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.5</a></div><div class="footer_custom_text">Keine Ahnung</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
