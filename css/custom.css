@@ -1,5 +1,17 @@
 /* source/css/custom.css */
 
+/* 改为纯白背景，深色文字 */
+[data-theme="light"] #loading-box {
+    background-color: #ffffff !important;
+}
+[data-theme="light"] #loading-box .loading-word {
+    color: #333333 !important;
+}
+/* 去掉首页大图的灰色遮罩，让图片更透亮 */
+[data-theme="light"] #page-header::before {
+    background-color: rgba(0, 0, 0, 0.1) !important; /* 0.1很淡，几乎透明 */
+}
+
 [data-theme="dark"] {
     /* 全局背景：血影黑 - 极深，不发灰，带微弱红调 */
     --global-bg: #161212 !important; 
@@ -10,4 +22,8 @@
     
     /* 侧边栏/目录背景：同卡片色 */
     --sidebar-bg: #1F1B1B !important;
+}
+/* 关键：让深色模式的“加载页”也变成血影黑，实现无缝切换 */
+[data-theme="dark"] #loading-box {
+    background-color: #161212 !important;
 }
