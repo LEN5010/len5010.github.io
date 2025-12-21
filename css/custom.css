@@ -1,0 +1,13 @@
+/* source/css/custom.css */
+
+[data-theme="dark"] {
+    /* 全局背景：血影黑 - 极深，不发灰，带微弱红调 */
+    --global-bg: #161212 !important; 
+    
+    /* 卡片背景：比背景稍微亮一点点，区分层次 */
+    /* 这里用了 #1F1B1B 作为卡片色，刚好利用了它“稍灰”的特性来做区分 */
+    --card-bg: #1F1B1B !important; 
+    
+    /* 侧边栏/目录背景：同卡片色 */
+    --sidebar-bg: #1F1B1B !important;
+}
