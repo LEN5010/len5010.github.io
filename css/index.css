@@ -1658,7 +1658,7 @@ figure.highlight pre .javascript .function {
 }
 .container code {
   padding: 2px 5px;
-  background: rgba(201,42,42,0.05);
+  background: #fdf2f2;
   color: #d32f2f;
 }
 .container pre {
@@ -6297,7 +6297,7 @@ blockquote.pullquote.right {
   box-shadow: none;
 }
 [data-theme='dark'] .container .note code {
-  background: rgba(201,42,42,0.05);
+  background: #fdf2f2;
 }
 [data-theme='dark'] .container .aplayer {
   filter: brightness(0.8);
