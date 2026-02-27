@@ -1,23 +1,5 @@
 var 引流 = [
-  "https://space.bilibili.com/672328094",
-  "https://www.bilibili.com/video/BV1FZ4y1F7HH",
-  "https://www.bilibili.com/video/BV1FX4y1g7u8",
-  "https://www.bilibili.com/video/BV1aK4y1P7Cg",
-  "https://www.bilibili.com/video/BV17A411V7Uh",
-  "https://www.bilibili.com/video/BV1JV411b7Pc",
-  "https://www.bilibili.com/video/BV1AV411v7er",
-  "https://www.bilibili.com/video/BV1564y1173Q",
-
-  "https://www.bilibili.com/video/BV1MX4y1N75X",
-  "https://www.bilibili.com/video/BV17h411U71w",
-  "https://www.bilibili.com/video/BV1ry4y1Y71t",
-  "https://www.bilibili.com/video/BV1Sy4y1n7c4",
-  "https://www.bilibili.com/video/BV15y4y177uk",
-  "https://www.bilibili.com/video/BV1PN411X7QW",
-  "https://www.bilibili.com/video/BV1Dp4y1H7iB",
-  "https://www.bilibili.com/video/BV1bi4y1P7Eh",
-  "https://www.bilibili.com/video/BV1vQ4y1Z7C2",
-  "https://www.bilibili.com/video/BV1oU4y1h7Sc",
+  "https://space.bilibili.com/672328094"
 ]
 
 const initConfig = {
@@ -27,7 +9,7 @@ const initConfig = {
     link: 引流[Math.floor(Math.random() * 引流.length)],
     welcome: ["Hi!"],
     touch: "",
-    skin: ["诶，想看看其他团员吗？", "替换后入场文本"],
+    skin: [],
     custom: [
       { "selector": ".comment-form", "text": "Content Tooltip" },
       { "selector": ".home-social a:last-child", "text": "Blog Tooltip" },
@@ -35,10 +17,9 @@ const initConfig = {
       { "selector": ".post-content a, .page-content a, .post a", "type": "link" }
     ],
   },
-  night: "toggleNightMode()",
+  night: false,
   model: [
     "/live2d/Diana/Diana.model3.json",
-    "/live2d/Ava/Ava.model3.json",
   ],
   tips: true,
   onModelLoad: onModelLoad
