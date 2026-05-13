@@ -1,5 +1,6 @@
 var 引流 = [
-  "https://space.bilibili.com/672328094"
+  "https://space.bilibili.com/672328094",
+  "https://www.bilibili.com/video/BV1gV9TBKEc8/"
 ]
 
 const initConfig = {
