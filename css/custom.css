@@ -28,12 +28,11 @@
     background-color: #161212 !important;
 }
 
-.announcement_content .announcement-link {
+.friend-link-card .friend-link-button {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-top: 10px;
     padding: 8px 12px;
     border-radius: 7px;
     background: var(--btn-bg);
@@ -41,7 +40,7 @@
     line-height: 1.4;
 }
 
-.announcement_content .announcement-link:hover {
+.friend-link-card .friend-link-button:hover {
     background: var(--btn-hover-color);
     color: var(--btn-color);
 }
